@@ -1,11 +1,13 @@
-<!DOCTYPE html> 
-<html lang="en"> 
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azure Subnet Copilot</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
 </head>
 <body> 
   <h1>
-      Subnet IP Address Calculator
+      Azure Subnet IP Range finder (Azure Subnet Copilot)
   </h1>
   <form method="post">
     <label for="vnet_iprange"></label>Virtual Network IP Range (CIDR):</label> <input name="vnet_iprange" id="vnet_iprange" placeholder="Enter CIDR"/>
