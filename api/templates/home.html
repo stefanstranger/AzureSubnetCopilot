@@ -1,0 +1,22 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
+</head>
+<body> 
+  <h1>
+      Subnet IP Address Calculator
+  </h1>
+  <form method="post">
+    <label for="vnet_iprange"></label>Virtual Network IP Range (CIDR):</label> <input name="vnet_iprange" id="vnet_iprange" placeholder="Enter CIDR"/>
+    <br/>Example: 10.230.16.0/26<br/>
+    <br/><br/>
+    <label for="subnet_ipranges"></label>Existing Subnet IP Ranges (CIDR) comma separated:</label> <input name="subnet_ipranges" id="subnet_ipranges" placeholder="Enter IP Ranges"/>
+    <br/>Example: 10.230.16.0/27,10.230.16.32/28<br/>
+    <br/><br/>
+    <label for="required_ips"></label>Number of required IP addresses:</label> <input name="required_ips" id="required_ips" title="Number of required IP addresses" placeholder="Enter number of required IP addresses"/>
+    <button type="submit">Submit</button>
+    <br/>Example: 10<br/>
+  </form>
+</body> 
+</html>
