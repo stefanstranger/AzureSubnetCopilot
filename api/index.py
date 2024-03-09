@@ -61,6 +61,6 @@ def home():
             "total_ips": len(IPNetwork(cidr))
         }
     
-        return jsonify({"azure_vnet_ip_range": ip_ranges, "existing_": existing_cidrs_info, "start_end_ip": f"{start_ip} - {end_ip}", "suitable_ip_range": suitable_range, "total_ips": suitable_ips})
+        return jsonify({"azure_vnet_ip_range": ip_ranges, "existing_subnets": existing_cidrs_info, "start_end_ip": f"{start_ip} - {end_ip}", "suitable_ip_range": suitable_range, "total_ips": suitable_ips})
         
     return render_template("home.html")
