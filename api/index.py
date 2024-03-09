@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from netaddr import IPNetwork, IPSet
 
 app = Flask(__name__)
+app.json.sort_keys = False
 
 def convert_to_list(existing_cidrs):
     # Check if there are multiple existing cidrs are added
@@ -14,7 +15,7 @@ def home():
     if request.method == "POST":
         cidr = request.form["vnet_iprange"]
         existing_cidrs = request.form["subnet_ipranges"]
-        required_ips = int(request.form["required_ips"])       
+        required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
 
         all_ips = IPSet(IPNetwork(cidr))
         existing_cidrs_info = []
@@ -60,9 +61,6 @@ def home():
             "total_ips": len(IPNetwork(cidr))
         }
     
-        return jsonify({"ip_ranges": ip_ranges, "existing_cidrs": existing_cidrs_info, "start_end_ip": f"{start_ip} - {end_ip}", "suitable_range": suitable_range, "total_ips": suitable_ips})
+        return jsonify({"azure_vnet_ip_range": ip_ranges, "existing_": existing_cidrs_info, "start_end_ip": f"{start_ip} - {end_ip}", "suitable_ip_range": suitable_range, "total_ips": suitable_ips})
         
     return render_template("home.html")
-
-#if __name__ == '__main__':
-#    app.run(debug=True)
