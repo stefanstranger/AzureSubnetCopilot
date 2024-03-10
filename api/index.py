@@ -87,6 +87,7 @@ def home():
             "start_end_ip": f"{str(IPNetwork(cidr).network)} - {str(IPNetwork(cidr).broadcast)}",
             "total_ips": len(IPNetwork(cidr))
         }
+        
         json_data = jsonify({"azure_vnet_ip_range": ip_ranges, "existing_subnets": existing_cidrs_info, "start_end_ip": f"{start_ip} - {end_ip}", "suitable_ip_range": suitable_range, "total_ips": suitable_ips})
         
         azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html = json_to_html_table(json_data)
