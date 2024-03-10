@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, pandas as pd
+from flask import Flask, request, jsonify, render_template
 from netaddr import IPNetwork, IPSet
 from pandas import pandas as pd
 
