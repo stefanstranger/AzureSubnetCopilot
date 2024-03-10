@@ -1,5 +1,32 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, pandas as pd
 from netaddr import IPNetwork, IPSet
+import pandas as pd
+
+def json_to_html_table(json_data):
+    # Convert JSON data to pandas DataFrame
+    azure_vnet_ip_range_df = pd.DataFrame([json_data['azure_vnet_ip_range']], columns=['cidr', 'start_end_ip', 'total_ips'])
+    existing_subnets_df = pd.DataFrame(json_data['existing_subnets'], columns=['cidr', 'start_end_ip', 'total_ips'])
+    suitable_ip_range_df = pd.DataFrame([{'cidr': json_data['suitable_ip_range'], 'start_end_ip': json_data['start_end_ip'], 'total_ips': json_data['total_ips']}])
+
+    # Convert DataFrames to HTML tables
+    azure_vnet_ip_range_html = azure_vnet_ip_range_df.to_html(index=False)
+    existing_subnets_html = existing_subnets_df.to_html(index=False)
+    suitable_ip_range_html = suitable_ip_range_df.to_html(index=False)
+
+    return azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html
+
+def json_to_html_table(json_data):
+    # Convert JSON data to pandas DataFrame
+    azure_vnet_ip_range_df = pd.DataFrame([json_data['azure_vnet_ip_range']], columns=['cidr', 'start_end_ip', 'total_ips'])
+    existing_subnets_df = pd.DataFrame(json_data['existing_subnets'], columns=['cidr', 'start_end_ip', 'total_ips'])
+    suitable_ip_range_df = pd.DataFrame([{'cidr': json_data['suitable_ip_range'], 'start_end_ip': json_data['start_end_ip'], 'total_ips': json_data['total_ips']}])
+
+    # Convert DataFrames to HTML tables
+    azure_vnet_ip_range_html = azure_vnet_ip_range_df.to_html(index=False)
+    existing_subnets_html = existing_subnets_df.to_html(index=False)
+    suitable_ip_range_html = suitable_ip_range_df.to_html(index=False)
+
+    return azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html
 
 app = Flask(__name__)
 app.json.sort_keys = False
