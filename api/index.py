@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template, pandas as pd
 from netaddr import IPNetwork, IPSet
-import pandas as pd
+from pandas import pandas as pd
 
 def json_to_html_table(json_data):
     # Convert JSON data to pandas DataFrame
