@@ -43,19 +43,24 @@ def home():
         cidr = request.form["vnet_iprange"]
         existing_cidrs = request.form.get("subnet_ipranges", "")
         required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
-
         all_ips = IPSet(IPNetwork(cidr))
-        existing_cidrs_info = []
+
+        sorted_existing_cidrs = []
+        for existing_cidr in existing_cidrs:
+            existing_network = IPNetwork(existing_cidr)
+            sorted_existing_cidrs.append(existing_network)
         
-        if existing_cidrs:
-            for existing_cidr in convert_to_list(existing_cidrs):
-                existing_network = IPNetwork(existing_cidr)
-                all_ips.remove(existing_network)
-                existing_cidrs_info.append({
-                    "cidr": existing_cidr,
-                    "start_end_ip": f"{str(existing_network.network)} - {str(existing_network.broadcast)}",
-                    "total_ips": len(existing_network)
-                })
+        existing_cidrs_info = []
+        for sorted_existing_cidr in sorted(sorted_existing_cidrs):
+            existing_network = IPNetwork(sorted_existing_cidr)
+            sorted_existing_cidrs.append(existing_network)
+            print("remove existing network: " + str(existing_network))
+            all_ips.remove(existing_network)
+            existing_cidrs_info.append({
+                "cidr": str(existing_network),
+                "start_end_ip": f"{str(existing_network.network)} - {str(existing_network.broadcast)}",
+                "total_ips": len(existing_network)
+            })
         
         # Calculate total IPs in the CIDR and existing CIDRs
         total_ips_in_cidr = len(IPNetwork(cidr))
