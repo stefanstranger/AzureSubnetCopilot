@@ -41,7 +41,7 @@ def convert_to_list(existing_cidrs):
 def home():
     if request.method == "POST":
         cidr = request.form["vnet_iprange"]
-        existing_cidrs = request.form["subnet_ipranges"]
+        existing_cidrs = request.form.get("subnet_ipranges", "")
         required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
 
         all_ips = IPSet(IPNetwork(cidr))
