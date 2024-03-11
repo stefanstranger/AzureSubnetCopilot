@@ -57,7 +57,7 @@ def home():
                 existing_network = IPNetwork(sorted_existing_cidr)
                 all_ips.remove(existing_network)
                 existing_cidrs_info.append({
-                    "cidr": sorted_existing_cidr,
+                    "cidr": str(existing_network),
                     "start_end_ip": f"{str(existing_network.network)} - {str(existing_network.broadcast)}",
                     "total_ips": len(existing_network)
                 })
