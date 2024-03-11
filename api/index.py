@@ -48,7 +48,7 @@ def home():
             
         if existing_cidrs:
             sorted_existing_cidrs = []
-            for existing_cidr in existing_cidrs:
+            for existing_cidr in convert_to_list(existing_cidrs):
                 existing_network = IPNetwork(existing_cidr)
                 sorted_existing_cidrs.append(existing_network)
 
