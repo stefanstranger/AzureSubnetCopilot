@@ -53,7 +53,7 @@ def home():
                 sorted_existing_cidrs.append(existing_network)
 
             existing_cidrs_info = []    
-            for sorted_existing_cidr in convert_to_list(sorted_existing_cidrs):
+            for sorted_existing_cidr in sorted(sorted_existing_cidrs):
                 existing_network = IPNetwork(sorted_existing_cidr)
                 all_ips.remove(existing_network)
                 existing_cidrs_info.append({
