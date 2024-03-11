@@ -46,14 +46,17 @@ def home():
 
         all_ips = IPSet(IPNetwork(cidr))
         existing_cidrs_info = []
-        for existing_cidr in convert_to_list(existing_cidrs):
-            existing_network = IPNetwork(existing_cidr)
-            all_ips.remove(existing_network)
-            existing_cidrs_info.append({
-                "cidr": existing_cidr,
-                "start_end_ip": f"{str(existing_network.network)} - {str(existing_network.broadcast)}",
-                "total_ips": len(existing_network)
-            })
+        
+        if existing_cidrs:
+            for existing_cidr in convert_to_list(existing_cidrs):
+                existing_network = IPNetwork(existing_cidr)
+                all_ips.remove(existing_network)
+                existing_cidrs_info.append({
+                    "cidr": existing_cidr,
+                    "start_end_ip": f"{str(existing_network.network)} - {str(existing_network.broadcast)}",
+                    "total_ips": len(existing_network)
+                })
+        
         # Calculate total IPs in the CIDR and existing CIDRs
         total_ips_in_cidr = len(IPNetwork(cidr))
         total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
