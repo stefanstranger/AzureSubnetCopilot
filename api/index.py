@@ -66,7 +66,7 @@ def home():
 
         # Check if the required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR
         if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr:
-            return jsonify({"error": "The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR"})
+            return render_template('error.html', error_message='The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR')
     
         # Find the smallest suitable subnet
         suitable_range = None
