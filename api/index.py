@@ -68,24 +68,19 @@ def home():
         if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr:
             return render_template('error.html', error_message='The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR')
     
-        # Find the smallest suitable subnet
+        # Iterate all_ips and find suitable_range based on the required number of ip addresses
         suitable_range = None
         start_ip = None
         end_ip = None
         suitable_ips = 0
-        for prefixlen in range(30, 16, -1):  # Start from /30 and go up to /17
-            subnet_size = 2 ** (32 - prefixlen)
-            if subnet_size < required_ips:
-                continue
-            for ip in all_ips.iter_cidrs():
-                subnet = IPNetwork(f"{ip.ip}/{prefixlen}")
-                if all_ips.issuperset(subnet):
-                    suitable_range = str(subnet.cidr)
-                    start_ip = str(subnet.network)
-                    end_ip = str(subnet.broadcast)
-                    suitable_ips = subnet_size
-                    break
-            if suitable_range is not None:
+        for ip in all_ips.iter_cidrs():
+            subnet = IPNetwork(ip)
+            subnet_size = len(subnet)
+            if subnet_size >= required_ips:
+                suitable_range = str(subnet.cidr)
+                start_ip = str(subnet.network)
+                end_ip = str(subnet.broadcast)
+                suitable_ips = subnet_size
                 break
     
         ip_ranges = {
