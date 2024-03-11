@@ -59,7 +59,10 @@ def home():
         
         # Calculate total IPs in the CIDR and existing CIDRs
         total_ips_in_cidr = len(IPNetwork(cidr))
-        total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
+        if existing_cidrs:
+            total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
+        else:
+            total_ips_in_existing_cidrs = 0
 
         # Check if the required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR
         if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr:
