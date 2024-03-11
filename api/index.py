@@ -45,10 +45,16 @@ def home():
         required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
 
         all_ips = IPSet(IPNetwork(cidr))
-        existing_cidrs_info = []        
+            
         if existing_cidrs:
-            for existing_cidr in convert_to_list(existing_cidrs):
+            sorted_existing_cidrs = []
+            for existing_cidr in existing_cidrs:
                 existing_network = IPNetwork(existing_cidr)
+                sorted_existing_cidrs.append(existing_network)
+
+            existing_cidrs_info = []    
+            for sorted_existing_cidr in convert_to_list(sorted_existing_cidrs):
+                existing_network = IPNetwork(sorted_existing_cidr)
                 all_ips.remove(existing_network)
                 existing_cidrs_info.append({
                     "cidr": existing_cidr,
