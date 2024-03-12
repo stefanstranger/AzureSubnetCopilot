@@ -84,6 +84,7 @@ def home():
         else:
             print("There are no existing Subnet Ranges")
             total_ips_in_existing_cidrs = 0
+            print("total_ips_in_existing_cidrs: " + str(total_ips_in_existing_cidrs))
 
             # Find the smallest suitable subnet
             existing_cidrs_info = []
