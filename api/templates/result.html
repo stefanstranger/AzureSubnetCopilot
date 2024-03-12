@@ -1,0 +1,18 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Result</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
+</head>
+<body>
+    <h1>Azure VNet IP Range</h1>
+    {{ azure_vnet_ip_range|safe }}
+
+    <h1>Existing Subnets</h1>
+    {{ existing_subnets|safe }}
+
+    <h1>Suitable IP Range</h1>
+    {{ suitable_ip_range|safe }}
+</body>
+</html>
