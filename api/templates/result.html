@@ -22,10 +22,12 @@
           var data = JSON.parse('{{ json_data }}');
           var json = JSON.stringify(data, null, 2);  // stringify with pretty print
   
-          // Open a new window and write the JSON data to it
-          var win = window.open("", "_blank");
-          win.document.write("<pre>" + json + "</pre>");
+          // Create a data URI with the JSON data
+          var dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(json);
+  
+          // Open the data URI in a new tab
+          window.open(dataUri, '_blank');
       }
-  </script>
+    </script>
 </body>
 </html>
