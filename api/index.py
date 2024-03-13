@@ -44,6 +44,9 @@ def home():
         existing_cidrs = request.form.get("subnet_ipranges", "")
         required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
         all_ips = IPSet(IPNetwork(cidr))
+
+        # Variables
+        total_ips_in_existing_cidrs = 0
         
         # Check if there are existing Subnet Ranges    
         if existing_cidrs:
@@ -82,8 +85,7 @@ def home():
                     break            
             
         else:
-            print("There are no existing Subnet Ranges")
-            total_ips_in_existing_cidrs = 0
+            print("There are no existing Subnet Ranges")            
             print("total_ips_in_existing_cidrs: " + str(total_ips_in_existing_cidrs))
 
             # Find the smallest suitable subnet
