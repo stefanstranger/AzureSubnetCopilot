@@ -43,16 +43,20 @@ def home():
         cidr = request.form["vnet_iprange"]
         existing_cidrs = request.form.get("subnet_ipranges", "")
         required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
-
         all_ips = IPSet(IPNetwork(cidr))
+
+        # Variables
+        total_ips_in_existing_cidrs = 0
+        total_ips_in_cidr = len(IPNetwork(cidr)) # Total IPs in the CIDR
         
-        existing_cidrs_info = []    
+        # Check if there are existing Subnet Ranges    
         if existing_cidrs:
             sorted_existing_cidrs = []
             for existing_cidr in convert_to_list(existing_cidrs):
                 existing_network = IPNetwork(existing_cidr)
                 sorted_existing_cidrs.append(existing_network)
-                
+
+            existing_cidrs_info = []    
             for sorted_existing_cidr in sorted(sorted_existing_cidrs):
                 existing_network = IPNetwork(sorted_existing_cidr)
                 all_ips.remove(existing_network)
@@ -61,32 +65,58 @@ def home():
                     "start_end_ip": f"{str(existing_network.network)} - {str(existing_network.broadcast)}",
                     "total_ips": len(existing_network)
                 })
-        
-        # Calculate total IPs in the CIDR and existing CIDRs
-        total_ips_in_cidr = len(IPNetwork(cidr))
-        if existing_cidrs:
-            total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
-        else:
-            total_ips_in_existing_cidrs = 0
 
+            # Calculate total IPs in the CIDR and existing CIDRs
+            total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
+            
+            # Iterate all_ips and find suitable_range based on the required number of ip addresses
+            suitable_range = None
+            start_ip = None
+            end_ip = None
+            suitable_ips = 0
+            for ip in all_ips.iter_cidrs():
+                subnet = IPNetwork(ip)
+                subnet_size = len(subnet)
+                if subnet_size >= required_ips:
+                    suitable_range = str(subnet.cidr)
+                    start_ip = str(subnet.network)
+                    end_ip = str(subnet.broadcast)
+                    suitable_ips = subnet_size
+                    break            
+            
+        else:
+            print("There are no existing Subnet Ranges")            
+            # Find the smallest suitable subnet
+            existing_cidrs_info = []
+            suitable_range = None
+            start_ip = None
+            end_ip = None
+            suitable_ips = 0
+            for prefixlen in range(30, 23, -1):  # Start from /30 and go up to /24
+                subnet_size = 2 ** (32 - prefixlen)
+                print("prefixLen: " + str(prefixlen))
+                print("subnet_size: " + str(subnet_size ))
+                if subnet_size < required_ips:
+                    print("subnet_size smaller than required_ips")
+                    continue
+                print("prefixlen provides sufficient requested ip addresses")
+                for ip in all_ips.iter_cidrs():
+                    print("Check available ip_range: " + str(ip))
+                    subnet = IPNetwork(f"{ip.ip}/{prefixlen}")
+                    print("subnet: " + str(subnet.cidr))
+                    if all_ips.issuperset(subnet): # is checking if the all_ips IP set includes all the IP addresses in the subnet.
+                        suitable_range = str(subnet.cidr)
+                        print("suitable_range: " + str(suitable_range))
+                        start_ip = str(subnet.network)
+                        end_ip = str(subnet.broadcast)
+                        suitable_ips = subnet_size
+                        break
+                if suitable_range is not None:
+                    break
+        
         # Check if the required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR
         if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr:
             return render_template('error.html', error_message='The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR')
-    
-        # Iterate all_ips and find suitable_range based on the required number of ip addresses
-        suitable_range = None
-        start_ip = None
-        end_ip = None
-        suitable_ips = 0
-        for ip in all_ips.iter_cidrs():
-            subnet = IPNetwork(ip)
-            subnet_size = len(subnet)
-            if subnet_size >= required_ips:
-                suitable_range = str(subnet.cidr)
-                start_ip = str(subnet.network)
-                end_ip = str(subnet.broadcast)
-                suitable_ips = subnet_size
-                break
     
         ip_ranges = {
             "cidr": cidr,
@@ -114,7 +144,5 @@ def home():
         print(suitable_ip_range_html)
         
         return render_template('result.html', azure_vnet_ip_range=azure_vnet_ip_range_html, existing_subnets=existing_subnets_html, suitable_ip_range=suitable_ip_range_html)
-            
-        #return jsonify({"azure_vnet_ip_range": ip_ranges, "existing_subnets": existing_cidrs_info, "start_end_ip": f"{start_ip} - {end_ip}", "suitable_ip_range": suitable_range, "total_ips": suitable_ips})
-        
+
     return render_template("home.html")
