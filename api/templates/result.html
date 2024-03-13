@@ -15,21 +15,17 @@
     <h1>Suitable IP Range</h1>
     {{ suitable_ip_range|safe }}
 
-    <button onclick="downloadJson()">Export as JSON</button>
+    <button onclick="openJsonInNewWindow()">Open JSON in New Window</button>
 
     <script>
-      function downloadJson() {
+      function openJsonInNewWindow() {
           var data = JSON.parse('{{ json_data }}');
+          var json = JSON.stringify(data, null, 2);  // stringify with pretty print
   
-          var json = JSON.stringify(data);
-          var blob = new Blob([json], {type: "application/json"});
-          var url  = URL.createObjectURL(blob);
-  
-          var a = document.createElement('a');
-          a.download = 'data.json';
-          a.href = url;
-          a.click();
+          // Open a new window and write the JSON data to it
+          var win = window.open("", "_blank");
+          win.document.write("<pre>" + json + "</pre>");
       }
-    </script>
+  </script>
 </body>
 </html>
