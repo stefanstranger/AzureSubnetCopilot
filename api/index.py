@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from netaddr import IPNetwork, IPSet
 from pandas import pandas as pd
+import json
 
 def json_to_html_table(json_data):
     # Convert JSON data to pandas DataFrame
@@ -134,7 +135,9 @@ def home():
         }
 
         # Convert the dictionary to a JSON response
-        json_data = jsonify(data)
+        #json_data = jsonify(data)
+        # Convert the data to a JSON string
+        data_json = json.dumps(data)
 
         # Convert the dictionary to HTML tables
         azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html = json_to_html_table(data)
@@ -143,6 +146,6 @@ def home():
         print(existing_subnets_html)
         print(suitable_ip_range_html)
         
-        return render_template('result.html', azure_vnet_ip_range=azure_vnet_ip_range_html, existing_subnets=existing_subnets_html, suitable_ip_range=suitable_ip_range_html)
+        return render_template('result.html', azure_vnet_ip_range=azure_vnet_ip_range_html, existing_subnets=existing_subnets_html, suitable_ip_range=suitable_ip_range_html,json_data=data_json)
 
     return render_template("home.html")
