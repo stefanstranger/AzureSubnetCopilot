@@ -47,6 +47,7 @@ def home():
 
         # Variables
         total_ips_in_existing_cidrs = 0
+        total_ips_in_cidr = len(IPNetwork(cidr)) # Total IPs in the CIDR
         
         # Check if there are existing Subnet Ranges    
         if existing_cidrs:
@@ -66,7 +67,6 @@ def home():
                 })
 
             # Calculate total IPs in the CIDR and existing CIDRs
-            total_ips_in_cidr = len(IPNetwork(cidr))
             total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
             
             # Iterate all_ips and find suitable_range based on the required number of ip addresses
@@ -86,8 +86,6 @@ def home():
             
         else:
             print("There are no existing Subnet Ranges")            
-            print("total_ips_in_existing_cidrs: " + str(total_ips_in_existing_cidrs))
-
             # Find the smallest suitable subnet
             existing_cidrs_info = []
             suitable_range = None
