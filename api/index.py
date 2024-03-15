@@ -179,6 +179,3 @@ def home():
         return render_template('result.html', azure_vnet_ip_range=azure_vnet_ip_range_html, existing_subnets=existing_subnets_html, suitable_ip_range=suitable_ip_range_html)
 
     return render_template("home.html")
-
-if __name__ == '__main__':
-    app.run(debug=True)
