@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from netaddr import IPNetwork, IPSet
 from pandas import pandas as pd
+import math
 
 def json_to_html_table(json_data):
     # Convert JSON data to pandas DataFrame
@@ -27,6 +28,10 @@ def json_to_html_table(json_data):
     suitable_ip_range_html = suitable_ip_range_df.to_html(index=False)
 
     return azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html
+
+def smallest_subnet_size(required_ips):
+    # Calculate the smallest subnet size that can fit the required IPs
+    return 32 - math.ceil(math.log2(required_ips))
 
 app = Flask(__name__)
 app.json.sort_keys = False
@@ -69,20 +74,48 @@ def home():
             # Calculate total IPs in the CIDR and existing CIDRs
             total_ips_in_existing_cidrs = sum(len(IPNetwork(existing_cidr)) for existing_cidr in convert_to_list(existing_cidrs))
             
+            # Calculate the smallest subnet size
+            smallest_subnet = smallest_subnet_size(required_ips)
+
             # Iterate all_ips and find suitable_range based on the required number of ip addresses
             suitable_range = None
             start_ip = None
             end_ip = None
             suitable_ips = 0
-            for ip in all_ips.iter_cidrs():
-                subnet = IPNetwork(ip)
-                subnet_size = len(subnet)
-                if subnet_size >= required_ips:
-                    suitable_range = str(subnet.cidr)
-                    start_ip = str(subnet.network)
-                    end_ip = str(subnet.broadcast)
-                    suitable_ips = subnet_size
-                    break            
+
+            # Continue the loop until the smallest size is found
+            while suitable_range is None:
+                for ip in all_ips.iter_cidrs():
+                    subnet = IPNetwork(ip)
+                    subnet_size = len(subnet)
+                    print("Suggested subnet: " + str(subnet.cidr) + " with size: " + str(subnet_size) + " smallest_subnet: " + str(smallest_subnet) + " required_ips: " + str(required_ips) + " total_ips_in_existing_cidrs: " + str(total_ips_in_existing_cidrs) + " total_ips_in_cidr: " + str(total_ips_in_cidr) )
+                    if subnet_size < required_ips:
+                        print("subnet_size larger than required_ips")
+                        continue
+                    # If the subnet size is smaller than the required IPs and the smallest subnet size, then it try with the smallest subnet size
+                    if subnet.prefixlen >= smallest_subnet and subnet_size >= required_ips:
+                        suitable_range = str(subnet.cidr)
+                        start_ip = str(subnet.network)
+                        end_ip = str(subnet.broadcast)
+                        suitable_ips = subnet_size
+                        break
+                    else:
+                        print("Check smallest subnet: " + str(IPNetwork(f"{subnet.ip}/{smallest_subnet}")))
+                        subnet = IPNetwork(f"{subnet.ip}/{smallest_subnet}")
+                        subnet_size = len(subnet)                   
+                        if all_ips.issuperset(IPNetwork(f"{subnet.ip}/{smallest_subnet}")): # is checking if the all_ips IP set includes all the IP addresses in the subnet.
+                            suitable_range = str(subnet.cidr)
+                            print("suitable_range: " + str(suitable_range))
+                            start_ip = str(subnet.network)
+                            end_ip = str(subnet.broadcast)
+                            suitable_ips = subnet_size
+                            break
+                # If suitable_range is still None after the loop, decrease the smallest_subnet by 1
+                if suitable_range is None:
+                    smallest_subnet -= 1
+                    # If smallest_subnet is less than 0, break the loop to avoid an infinite loop
+                    if smallest_subnet < 0:
+                        break          
             
         else:
             print("There are no existing Subnet Ranges")            
