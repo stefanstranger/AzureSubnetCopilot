@@ -5,32 +5,33 @@
   <title>Azure Subnet Copilot</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
 </head>
-<body> 
+<body>
+  <nav>
+    <a href="about.html" style="float: right;">About</a>
+  </nav>
   <h1>
-      Azure Subnet IP Range finder (Azure Subnet Copilot)
+      Azure Subnet IP Range finder tool
   </h1>
   <p>
-    Network subnetting is a process that divides a network into two or more smaller network segments, called subnets. This is done by taking bits from the host portion of the IP address and using them to create a subnet address. This effectively 'subdivides' the original network.
+    This tool helps you find a suitable IP range for a new subnet in an existing Azure Virtual Network for the given number of required IP addresses. 
   </p>
   <p>
-    Subnetting can help improve network performance and security. By dividing a network into smaller subnets, you can reduce network traffic and create a more organized network architecture. Each subnet operates as its own smaller network, which can be controlled and managed separately from the rest of the network. This can help isolate parts of the network, improving security.
-  </p>
-  <p>
-    The process of subnetting involves a bit of binary math. An IP address is a 32-bit number, and the subnet mask determines which part of the address represents the network and which part represents the host. By changing the subnet mask, you can change the size of the subnets in your network.
-  </p>
-  <p>
-    This tool helps you find a suitable IP range for a new subnet in an existing Azure Virtual Network. It takes the existing Virtual Network IP range and the existing subnet IP ranges as input and returns a suitable IP range for the new subnet.
+    It takes the existing Virtual Network IP range and the existing subnet IP ranges and <u>required IP addresses</u> as input and returns a suitable IP range for the new subnet.
   </p>
   <form method="post">
     <label for="vnet_iprange"></label>Virtual Network IP Range (CIDR):</label> <input name="vnet_iprange" id="vnet_iprange" placeholder="Enter CIDR"/>
     <br/>Example: 10.230.16.0/26<br/>
     <br/><br/>
     <label for="subnet_ipranges"></label>Existing Subnet IP Ranges (CIDR) comma separated:</label> <input name="subnet_ipranges" id="subnet_ipranges" placeholder="Enter IP Ranges" oninput="this.value = this.value.trim()"/>
-    <br/>Example: 10.230.16.0/27,10.230.16.32/28<br/>
+    <br/>Example: 10.230.16.0/27,10.230.16.32/28 (or leave empty if no subnets are deployed)<br/>
     <br/><br/>
     <label for="required_ips"></label>Number of required IP addresses:</label> <input name="required_ips" id="required_ips" title="Number of required IP addresses" placeholder="Enter number of required IP addresses"/>
     <button type="submit">Submit</button>
-    <br/>Example: 10<br/>
+    <br/>Example: 10 (10 + 5 Azure reserved addresses)<br/>
+    <br/><br/>
+    <label for="json_output">Enable JSON Output:</label>
+    <input type="checkbox" id="json_output" name="json_output">
+    <br/><br/>
   </form>
 </body>
 <script>
