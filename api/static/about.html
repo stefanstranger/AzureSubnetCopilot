@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
+  <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
     <h1>About this Solution</h1>
@@ -15,6 +15,13 @@
     <p>And this solution takes into account the <a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq#are-there-any-restrictions-on-using-ip-addresses-within-these-subnets">Azure reserved IP addresses</a>. Azure reserves the first four addresses and the last address, for a total of five IP addresses within each subnet.</p>
     <h2>Limitations</h2>
     <p>This solution is designed to work with IPv4 addresses only. The smallest supported IPv4 subnet is /29 (8 IP addresses), and the largest is /16 (65536 IP addresses)</p>
+    <h2>Frequently Asked Questions</h2>
+    <ul>
+      <li><p>Why are you using Copilot in the name of the solution? Does it uses any Artificial Intelligence?</p></li>
+      <p>No the only Artificial Intelligence being used is during the development of the tool using some help from Github Copilot.</p>
+      <p>It was just me being funny because nowadays it seems that all new solutions have some kind of Artificial Intelligence added on.</p>
+      <p></p>
+    </ul>
     <h2>Issues or suggestions?</h2>
     <p>If you encounter any issues or have any suggestions, please submit them on our GitHub page.</p>
     <a href="https://github.com/stefanstranger/AzureSubnetCopilot/issues">Submit an Issue</a>
@@ -22,7 +29,6 @@
     <ul>
         <li><p><a href="https://visualsubnetcalc.com/">Visual Subnet Calculator</a></p></li>
         <li><p><a href="https://www.davidc.net/sites/default/subnets/subnets.html">davidc Visual subnet calculator</a></p></li>
-    </ul>
-    
+    </ul>    
 </body>
 </html>
