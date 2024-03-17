@@ -11,6 +11,9 @@
     </style>
 </head>
 <body>
+    <nav>
+        <a href="{{ url_for('static', filename='about.html')}}" class="about-link">About</a>
+    </nav>
     <h1>Error</h1>
     <p>{{ error_message }}</p>
 </body>

@@ -49,6 +49,7 @@ def home():
         existing_cidrs = request.form.get("subnet_ipranges", "")
         required_ips = int(request.form["required_ips"]) + 5  # Add 5 to account for Azure's reserved addresses   
         all_ips = IPSet(IPNetwork(cidr))
+        json_output = 'json_output' in request.form
 
         # Variables
         total_ips_in_existing_cidrs = 0
@@ -125,7 +126,7 @@ def home():
             start_ip = None
             end_ip = None
             suitable_ips = 0
-            for prefixlen in range(30, 23, -1):  # Start from /30 and go up to /24
+            for prefixlen in range(30, 15, -1):  # Start from /30 and go up to /16
                 subnet_size = 2 ** (32 - prefixlen)
                 print("prefixLen: " + str(prefixlen))
                 print("subnet_size: " + str(subnet_size ))
@@ -166,16 +167,19 @@ def home():
             "total_ips": suitable_ips
         }
 
-        # Convert the dictionary to a JSON response
-        json_data = jsonify(data)
+        if json_output:
+            return jsonify(data)
+        else:    
+            # Convert the dictionary to HTML tables
+            azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html = json_to_html_table(data)
 
-        # Convert the dictionary to HTML tables
-        azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html = json_to_html_table(data)
-
-        print(azure_vnet_ip_range_html)
-        print(existing_subnets_html)
-        print(suitable_ip_range_html)
-        
-        return render_template('result.html', azure_vnet_ip_range=azure_vnet_ip_range_html, existing_subnets=existing_subnets_html, suitable_ip_range=suitable_ip_range_html)
+            print(azure_vnet_ip_range_html)
+            print(existing_subnets_html)
+            print(suitable_ip_range_html)
+            
+            return render_template('result.html', azure_vnet_ip_range=azure_vnet_ip_range_html, existing_subnets=existing_subnets_html, suitable_ip_range=suitable_ip_range_html)
 
     return render_template("home.html")
+
+if __name__ == '__main__':
+    app.run(debug=True)

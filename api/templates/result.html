@@ -6,6 +6,9 @@
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css')}}">
 </head>
 <body>
+    <nav>
+      <a href="{{ url_for('static', filename='about.html')}}" class="about-link">About</a>
+    </nav>
     <h1>Azure VNet IP Range</h1>
     {{ azure_vnet_ip_range|safe }}
 

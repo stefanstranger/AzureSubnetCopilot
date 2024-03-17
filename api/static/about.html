@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>About this Solution</h1>
+    <p>This solution is designed to help you manage your IP addresses in Azure Virtual Network. It provides a way to view your existing subnets and find a suitable IP range for new subnets based on your required number of IP addresses.</p>
+    <h2>How does this differs from existing Subnet Calculators?</h2>
+    <p><a href="https://visualsubnetcalc.com/">Existing Subnet Calculators</a> are often designed to spit and join subnets based on network address and network size. This requires some basic network split and joining knowledge.</p>
+    <p>This solution is designed to be more user-friendly and is designed to be used by people who may not have a deep understanding of networking. It is designed for simplicity by just asking the required number of IP addresses for which you want the subnet to be created.</p>
+    <p>And this solution takes into account the <a href="https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq#are-there-any-restrictions-on-using-ip-addresses-within-these-subnets">Azure reserved IP addresses</a>. Azure reserves the first four addresses and the last address, for a total of five IP addresses within each subnet.</p>
+    <h2>Limitations</h2>
+    <p>This solution is designed to work with IPv4 addresses only. The smallest supported IPv4 subnet is /29 (8 IP addresses), and the largest is /16 (65536 IP addresses)</p>
+    <h2>Frequently Asked Questions</h2>
+    <ul>
+      <li><p>Why are you using Copilot in the name of the solution? Does it uses any Artificial Intelligence?</p></li>
+      <p>No the only Artificial Intelligence being used is during the development of the tool using some help from Github Copilot.</p>
+      <p>It was just me being funny because nowadays it seems that all new solutions have some kind of Artificial Intelligence added on.</p>
+      <li><p>Is this an official tool from Microsoft?</p></li>
+      <p>No this is just something I developed in my free time because I've seen (Microsoft) customers sometimes having challenges to find the right Azure Subnet Ranges</p>
+      <p></p>
+    </ul>
+    <h2>Issues or suggestions?</h2>
+    <p>If you encounter any issues or have any suggestions, please submit them on our GitHub page.</p>
+    <a href="https://github.com/stefanstranger/AzureSubnetCopilot/issues">Submit an Issue</a>
+    <h2>Links</h2>
+    <ul>
+        <li><p><a href="https://visualsubnetcalc.com/">Visual Subnet Calculator</a></p></li>
+        <li><p><a href="https://www.davidc.net/sites/default/subnets/subnets.html">davidc Visual subnet calculator</a></p></li>
+    </ul>    
+</body>
+</html>
