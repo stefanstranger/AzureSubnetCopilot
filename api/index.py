@@ -149,9 +149,16 @@ def home():
                     break
         
         # Check if the required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR
-        if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr:
+        if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr and not json_output:
             return render_template('error.html', error_message='The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR')
-    
+        else:
+            errordata = {
+                "error": "input_error",
+                "message": "The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR",
+                "detail": "Ensure that the number of required IPs plus the IPs in the existing CIDRs are less than the total IPs in the CIDR"
+            }
+            return jsonify(errordata)
+        
         ip_ranges = {
             "cidr": cidr,
             "start_end_ip": f"{str(IPNetwork(cidr).network)} - {str(IPNetwork(cidr).broadcast)}",
