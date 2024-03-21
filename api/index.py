@@ -150,8 +150,16 @@ def home():
         
         # Check if the required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR
         if required_ips + total_ips_in_existing_cidrs > total_ips_in_cidr:
-            return render_template('error.html', error_message='The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR')
-    
+            if not json_output:
+                return render_template('error.html', error_message='The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR')
+            else:
+                errordata = {
+                    "error": "input_error",
+                    "message": "The required IPs plus the IPs in the existing CIDRs exceed the total IPs in the CIDR",
+                    "detail": "Ensure that the number of required IPs plus the IPs in the existing CIDRs are less than the total IPs in the CIDR"
+                }
+                return jsonify(errordata), 422  
+        
         ip_ranges = {
             "cidr": cidr,
             "start_end_ip": f"{str(IPNetwork(cidr).network)} - {str(IPNetwork(cidr).broadcast)}",
@@ -168,7 +176,7 @@ def home():
         }
 
         if json_output:
-            return jsonify(data)
+            return jsonify(data), 200
         else:    
             # Convert the dictionary to HTML tables
             azure_vnet_ip_range_html, existing_subnets_html, suitable_ip_range_html = json_to_html_table(data)
