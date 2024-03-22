@@ -17,15 +17,20 @@
     <p>This solution is designed to work with IPv4 addresses only. The smallest supported IPv4 subnet is /29 (8 IP addresses), and the largest is /16 (65536 IP addresses)</p>
     <h2>Frequently Asked Questions</h2>
     <ul>
-      <li><p>Why are you using Copilot in the name of the solution? Does it uses any Artificial Intelligence?</p></li>
+      <li><p><b>Why are you using Copilot in the name of the solution? Does it uses any Artificial Intelligence?</b></p></li>
       <p>No the only Artificial Intelligence being used is during the development of the tool using some help from Github Copilot.</p>
       <p>It was just me being funny because nowadays it seems that all new solutions have some kind of Artificial Intelligence added on.</p>
-      <li><p>Is this an official tool from Microsoft?</p></li>
+      <li><p><b>Is this an official tool from Microsoft?</b></p></li>
       <p>No this is just something I developed in my free time because I've seen (Microsoft) customers sometimes having challenges to find the right Azure Subnet Ranges</p>
-      <li><p>Why is this not hosted in Azure?</p></li>
+      <li><p><b>Why is this not hosted in Azure?</b></p></li>
       <p>Because this is a personal project. I looked for options that would minimize the costs for hosting this solution. I might migrate this project in the future to Azure if I see advantages of hosting it there.</p>
-      <li><p>Can I host this solution within my own environment?</p></li>
+      <li><p><b>Can I host this solution within my own environment?</b></p></li>
       <p>Yes you can host this solution in your own environment. You can get all the code used to deploy this solution <a href="https://github.com/stefanstranger/AzureSubnetCopilot">here</a>.</p>
+      <li><p><b>Which data is being collected by the online version?</b></p></li>
+      <p><a href="https://vercel.com/docs/analytics">Vercels' Web Analytics data</a> is being collected.</p>
+      <p>And the values returned for the suggested subnet ip range</p>
+      <p>E.g. Suggested subnet: 10.0.0.144/29 with size: 8 smallest_subnet: 29 required_ips: 8 total_ips_in_existing_cidrs: 152 total_ips_in_cidr: 256).</p>
+      <p> These logs are kept for a maximum of 1 hour for troubleshooting.</p>
       <p></p>
     </ul>
     <h2>Issues or suggestions?</h2>
