@@ -1,6 +1,6 @@
-# Azure VNet IP Range Solution
+# Azure Virtual Network Subnet IP Range Solution
 
-This solution is a Python Flask web application that calculates and displays the Azure VNet IP range, existing subnets, and suitable IP range. This solution is designed to help you manage your IP addresses in Azure Virtual Network. It provides a way to view your existing subnets and find a suitable IP range for new subnets based on your required number of IP addresses.
+This solution is a Python Flask web application that calculates and displays the Azure Virtual Network IP range, existing subnets, and suitable IP range. This solution is designed to help you manage your Azure Virtual Network Subnet IP addresses in Azure Virtual Network. It provides a way to view your existing subnets and find a suitable IP range for new subnets based on your required number of IP addresses.
 
 ## How it works
 
@@ -93,3 +93,7 @@ python3 .\index.py
 Open a browser with the following url: http://127.0.0.1:5000
 
 Remember to deactivate the environment when you're done working on the project. You can do this by typing deactivate in the command prompt.
+
+## Online version
+
+This solution is also available online at the following address: [https://azure-subnet-copilot.vercel.app/](https://azure-subnet-copilot.vercel.app/)
